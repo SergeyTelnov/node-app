@@ -12,7 +12,7 @@ async function addNote(title) {
     id: Date.now().toString(),
   };
   notes.push(note);
-  await fs.writeFile(notesPath, JSON.stringify(notes));
+  await saveNotes(notes);
   console.log(chalk.bgBlue("Note was added!"));
 }
 
@@ -31,15 +31,32 @@ async function printNotes() {
 
 async function removeNote(id) {
   const notes = await getNotes();
-  console.log(chalk.bgRed("Note was removed"));
-  await fs.writeFile(
-    notesPath,
-    JSON.stringify(notes.filter((n) => n.id !== JSON.stringify(id)))
-  );
+
+  const filtered = notes.filter((note) => note.id !== id);
+
+  await saveNotes(filtered);
+  console.log(chalk.bgRed(`Note with id="${id}" has been removed.`));
+}
+
+async function changeNote(id, title) {
+  const notes = await getNotes();
+  const newNotes = notes.map((n) => {
+    if (n.id === id) {
+      return (n = { ...n, title: title });
+    }
+    return n;
+  });
+  await saveNotes(newNotes);
+  console.log(chalk.bgGreen(`Note with id="${id}" has been changed.`));
+}
+
+async function saveNotes(notes) {
+  await fs.writeFile(notesPath, JSON.stringify(notes));
 }
 
 module.exports = {
   addNote,
-  printNotes,
   removeNote,
+  getNotes,
+  changeNote,
 };
