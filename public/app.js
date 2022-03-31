@@ -17,9 +17,12 @@ async function remove(id) {
   });
 }
 
-async function changeNote(id, data) {
-  return await fetch(`/${id}`, {
+async function changeNote(id, title) {
+  return await fetch("/", {
     method: "PUT",
-    body: JSON.stringify(`{ title: ${data} , id: ${id} }`),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ id, title }),
   });
 }

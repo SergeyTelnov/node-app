@@ -42,7 +42,7 @@ async function changeNote(id, title) {
   const notes = await getNotes();
   const newNotes = notes.map((n) => {
     if (n.id === id) {
-      return (n = { ...n, title: title });
+      return (n = { ...n, title });
     }
     return n;
   });

@@ -48,8 +48,8 @@ app.delete("/:id", async (req, res) => {
   });
 });
 
-app.put("/:id", async (req, res) => {
-  changeNote(req.params.id, req.body.title);
+app.put("/", async (req, res) => {
+  changeNote(req.body.id, req.body.title);
   res.render("index", {
     title: "Express App",
     notes: await getNotes(),
